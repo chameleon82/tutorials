@@ -1,0 +1,20 @@
+web:
+ image: nginx:alpine
+ container_name: php-webserver
+ ports:
+  - "80:80"
+ volumes:
+  - ./www:/www 
+  - ./conf.d:/etc/nginx/conf.d
+ links:
+  - php
+
+php:
+  image: chameleon82/php
+  container_name: php-fpm
+  volumes:
+    - ./www:/www
+#    - ./php-fpm.conf:/etc/php5/php-fpm.conf
+#    - ./php.ini:/etc/php5/php.ini
+
+  
