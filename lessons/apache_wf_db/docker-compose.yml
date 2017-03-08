@@ -1,0 +1,24 @@
+apache:
+  image: httpd:alpine
+  container_name: apache
+  ports:
+   - "8082:80"
+  volumes:
+   - ./conf/httpd.conf:/usr/local/apache2/conf/httpd.conf
+   - ./conf/httpd-vhosts.conf:/usr/local/apache2/conf/extra/httpd-vhosts.conf   
+  links:
+   - wildfly   
+wildfly:
+  image: chameleon82/wildfly
+  container_name: wf-server
+  ports:
+   - "9990:9990"
+   - "8080:8080"
+  links:
+   - db
+  command:  bash -c "/opt/jboss/wildfly/bin/jboss-cli.sh --commands=embed-server,\"/subsystem=datasources/data-source=oracle:add(jndi-name=java:/oracle,connection-url=jdbc:oracle:thin:@db:1521:xe,driver-name=oracle,user-name=system,password=oracle)\",stop-embedded-server && /opt/jboss/wildfly/bin/standalone.sh -b 0.0.0.0 -bmanagement 0.0.0.0"
+db:
+  image: chameleon82/oracle-xe-10g
+  container_name: oracle-xe
+  ports:
+   - "1521:1521"
