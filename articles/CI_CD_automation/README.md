@@ -42,19 +42,19 @@ JIRA-0001 Add Feature 1
 ```
 So, again, each commit will be linked to build and each build will be linked to commit and to issue in issue tracker. 
  
-> Keep your develop branch clean. Try to keep simple rule -- One feature - one commit in develop. Always squash your PR`s into develop branch. The same rule with master branch -- One release - one commit. But always merge into master to keep master and develop branches synchronized. 
+> Keep your develop branch clean. Try to keep simple rule - One feature equals one commit in develop. Always squash your PR`s into develop branch. The same rule with master branch - One release equals one commit. But always merge into master to keep master and develop branches synchronized. 
 
 ## Continuous integration
 
-The main idea of CI is as soon as posible recieve knowledge that our feature can be merged into our product without any side effects or even breakable changes. How do we know that our changes will not bring problems? The answer is -- tests. For CI we will divide all tests on unit and integrational. And here appears first metric -- code coverage. 
+The main idea of CI is as soon as posible recieve knowledge that our feature can be merged into our product without any side effects or even breakable changes. How do we know that our changes will not bring problems? The answer is tests. For CI we will divide all tests on unit and integrational. And here appears first metric code coverage. 
 As a result we want to receive ready to deploy artifact. 
 
 So, to be sure that feature can be implemented we want to know next information from our CI:
-  - Build successful (all unit and integrational tests passed)
+  - Build are successful (all unit and integrational tests passed)
   - Code coverage satisfied ( ex. not less than 75% )
 
 Different CI tools gives us different abilities but our CI/CD workflow based on branches and we need next from our GIT and CI instruments:
-   - Do not allow commit into develop and master branches directly. Only using PR (pull requests).
+   - Do not allow commit into develop and master branches directly. Strictly using PR (pull requests).
    - Do not allow merge PR when build failed or not yet started
    - Do not allow merge PR when code coverage too small 
 
@@ -67,8 +67,8 @@ First build plan can consist of next steps:
 5. Send git-hook with code-coverage result
 ```
 
-Let see closer to version meta information. As we use semantic versioning we will produce the same artifact name. For ex. for java applications it will be something like `api-1.0.0-SNAPSHOT.jar` and only one way to determine what version was compiled is update `META-INF` with `Implementation-Version: build-123`. For ui applications it can be much simplier and more usefull -- artifact can be `web-1.0.0.zip` or even `web-1.0.0.123.zip` but display version will be `1.0.0.123` where 123 is build version from CI.
-Good practice to have in your application place where you can see application version and all dependencies versions. It will save time to understand what builds deployed to environments. 
+Let see closer to version meta information. As we use semantic versioning we will produce the same artifact name. For ex. for java applications it will be something like `api-1.0.0-SNAPSHOT.jar` and only one way to determine what version was compiled is update `META-INF` with `Implementation-Version: build-123`. For ui applications it can be much simplier and more usefull cause artifact can be `web-1.0.0.zip` or even `web-1.0.0.123.zip` but display version will be `1.0.0.123` where 123 is the build version from CI.
+Good practice to have in your application place where you can see application version and all versions of app dependencies. It will save time to understand what builds are deployed to your environments. 
 
 Step 3 Compile and test. This step requires some dependencies and requirements on build machine. For example - for java applications it is JDK and access to maven or other artifact repository. Clean build on agent has some restrictions:
 - version of requirements can be different with app requirements and production environment. In some cases it can be unobvious problem.
@@ -104,7 +104,7 @@ Let add nexts step to api app build plan:
 ```
 ##### Artifact dependency environment
 Most CI tools allow to share artifacts between projects. 
-For our build plan we can setup to grab latest successfull api app artifact from master branch. In that case we can setup next docker-compose file strucure:
+For our build plan we can setup plan to grab latest successfull api app artifact from master branch. In that case we can setup next docker-compose file strucure:
 ```
 services:
   database:
